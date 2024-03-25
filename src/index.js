@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import connectDB from "./db/index.js";
 import { app } from "./app.js";
-dote nv.config({
+dotenv.config({
   path: "./  env",
 });
 
