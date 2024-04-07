@@ -170,8 +170,8 @@ const LogoutUser = asyncHandler(async (req, res) => {
   await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: {
-        refreshToken: undefined,
+      $unset: {
+        refreshToken: 1,
       },
     },
     {
@@ -367,7 +367,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       $lookup: {
         from: "subscriptions",
         localField: "_id",
-        foreignField: "$subscriber",
+        foreignField: " subscriber",
         as: "subscribers",
       },
     },
@@ -385,7 +385,7 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
           $size: "$subscribers",
         },
         ChannelSubscribedTo: {
-          $size: "$ubscribedTo",
+          $size: "$subscribedTo",
         },
         isSubscribed: {
           $cond: {
@@ -409,9 +409,10 @@ const getUserChannelProfile = asyncHandler(async (req, res) => {
       },
     },
   ]);
+  console.log(channel);
 
   if (!channel?.length) {
-    throw new ApiError(404, "Channel Not Found");
+    throw new ApiError(404, "Channel does Not Exist");
   }
 
   return res
